@@ -12,6 +12,11 @@ code {
     monospace;
 }
 
+.form-error {
+  color: red;
+  font-size: 16px;
+}
+
 /* Sidebar css */
 .sidebar-search-bar {
 	background-color: #d5d0f9;
@@ -40,4 +45,90 @@ code {
     opacity: .6;
     position: absolute;
     background: #000;
+}
+
+/* ============= Dashboard ================ */ 
+.manage-div {
+	padding: 3px;
+	text-align: center;
+} 
+.table-shadow {
+	border: 1px solid black;
+	padding: 10px;
+}
+.manage-color {
+	background: white;
+} 
+.small-box > .inner{
+	min-height: 130px;
+}
+.small-box p{
+	font-size:15px !important;
+	font-weight: 600;
+}
+
+.box-alignment {
+	background: #350e48;
+	padding: 5px;
+	text-align: center;
+	color: white;
+	font-size: 20px;
+}
+
+.new_one tr:nth-child(odd) {
+	padding: 10px;
+	background: #f5f2f2;
+}
+.new_one td,.new_one th{
+	padding: 5px;
+}
+.margin-bottom{
+	margin-bottom:10px
+}
+.margin-top{
+	 margin-top:140px
+}
+.margin-top2{
+	 margin-top:200px;
+}
+.margin-top3{
+	margin-top: 150px;
+}
+.label{ font-size: 85% !important; }
+.total_shop{font-size: 17px; font-weight: bold;}
+.weight_6{font-weight: 600;}
+.raphael-group-888-caption text,.raphael-group-1075-caption text{ font-size: 16px !important; }
+.amount-val {
+    color: #9999b2;
+    font-size: 13px;
+    padding-left: 5px;
+}
+.dashboard-button {
+    margin-bottom: 10px;
+    margin-top: 15px;
+	margin-right: 15px;
+	position: relative;
+	z-index: 999;
+}
+button > a {
+	color: white !important;
+}
+.label-success {
+	background-color: #350e48 !important;
+	padding: .5em .8em .5em !important;
+    border-radius: 0 !important;
+}
+.label-blue {
+	background-color: #00619b !important;
+}
+.label-pink {
+	background-color: #b62a5d !important;
+	padding: .5em .8em .5em !important;
+    border-radius: 0 !important;
+}
+.hyperlink-color {
+  color: #00619b;
+}
+.hyperlink-color:hover {
+  color: #9b0055;
 }

@@ -1,32 +1,18 @@
 import React from "react";
 
-const Footer = () => {
+const Footer = (props) => {
 	return (
 			<>
-				<div className="footer-ablove">
-					<div className="container">
-						<div className="row">
-							<p>Looking For Exclusive Services?
-								<button className="btn btn-default">Donate Now</button>
-							</p>
+				{
+					(props.value === '') ? '' :
+					<footer className="main-footer">
+						<div className="pull-right hidden-xs">
+							All rights reserved.
+							<strong><a className="hyperlink-color" href="http://triad01.com/" target="_blank" rel="noreferrer">TRIAD Technologies Pvt Ltd.</a></strong>
 						</div>
-					</div>
-				</div>
-
-				<div className="copy">
-					<div className="container">
-						<a href="https://www.smarteyeapps.com/">2021 &copy; All Rights Reserved | Designed and Developed by Shubham</a>
-
-						<span>
-							<a href="/"><i className="fab fa-github"></i></a>
-							<a href="/"><i className="fab fa-google-plus-g"></i></a>
-							<a href="/"><i className="fab fa-pinterest-p"></i></a>
-							<a href="/"><i className="fab fa-twitter"></i></a>
-							<a href="/"><i className="fab fa-facebook-f"></i></a>
-					</span>
-					</div>
-
-				</div>
+						<strong>Copyright &copy; 2021 <a className="hyperlink-color" href="http://retailerloyaltyomron.in/" target="_blank" rel="noreferrer">Triad01</a>.</strong> 
+					</footer>
+				}
 			</>
 	);
 }

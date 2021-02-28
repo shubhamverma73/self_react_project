@@ -1,76 +1,84 @@
-import React from 'react';
-
+import React, {useState}  from 'react';
+import {useHistory, Redirect} from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import logo from '../../assets/img/logo.png';
 
 const Home = () => {
 
     document.title = 'Home';
+    let history = useHistory();
+    const { register, handleSubmit, errors } = useForm({
+        mode: "onChange",
+        //mode: "onTouched"
+    });
+    const[showMessage, setshowMessage] = useState('hide');
+    const[messageType, setmessageType] = useState('success');
+    const[message, setMessage] = useState();
+
+    const onSubmit = async (data) => {
+        let items = data;
+        const formData = JSON.stringify(items);
+        let result = await fetch("http://localhost/omron_app_api/api/login", {
+            method: "POST",
+            body: formData
+        });
+        result = await result.json();
+        if(result.status === "2") {
+            localStorage.setItem('is_login', JSON.stringify(result.data[0]));
+            history.push('/dashboard');
+        } else {
+            setshowMessage('');
+            setmessageType('danger');
+            setMessage(result.message);
+        }
+        // ========================== Hide message after specific time period =================================
+        setTimeout( () => {
+            setshowMessage('hide');
+        }, 5000);
+    };
 
     return (
         <>
-            <div>
-                <div class="login-box">
-                    <div class="login-logo">
-                        <a href="<?php echo base_url(); ?>">
-                            <img width="300px" height="auto" src="#" alt="Echo Super Seller Scheme" />
-                        </a>
-                    </div>
-                    <div class="login-box-body">
-                        <div id="login-form">
-                            <p class="login-box-msg">Sign in to start your session</p>
-
-                            <form action="<?php echo current_url(); ?>" method="post">
-                                <div class="form-group has-feedback">
-                                    <input type="text" class="form-control" name="username" placeholder="Email or Username" required />
-                                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                                </div>
-                                <div class="form-group has-feedback">
-                                    <input type="password" class="form-control" name="password" placeholder="Password" required />
-                                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-8">
-                                        <div class="checkbox icheck">
-                                            <label>
-                                                <input type="checkbox" required /> I Accept <a href="#" target="_blank"> Terms &amp; Condition.</a>
-                                            </label>
+            {
+                localStorage.getItem('is_login') ? <Redirect to='/dashboard' /> :
+                <div>
+                    <div className="login-box">
+                    {
+                        (showMessage !== 'hide') ? 
+                        <div className={`alert alert-${messageType} ${showMessage}`} role="alert">
+                            {message}
+                        </div>
+                        : ''
+                    }
+                        <div className="login-logo">
+                            <a href={process.env.PUBLIC_URL}>
+                                <img width="300px" height="auto" src={logo} alt="Echo Super Seller Scheme" />
+                            </a>
+                        </div>
+                        <div className="login-box-body">
+                            <div id="login-form">
+                                <p className="login-box-msg">Sign in to start your session</p>
+                                <form action="/" method="post" onSubmit={handleSubmit(onSubmit)}>
+                                    <div className="form-group has-feedback"><p className="form-error">{errors.username && 'Username is required.'}</p>
+                                        <input type="text" className="form-control" name="username" placeholder="Email or Username" ref={register({ required: true })} />
+                                        <span className="glyphicon glyphicon-envelope form-control-feedback"></span>
+                                    </div>
+                                    <div className="form-group has-feedback"><p className="form-error">{errors.password && 'Password is required.'}</p>
+                                        <input type="password" className="form-control" name="password" placeholder="Password" ref={register({ required: true })} />
+                                        <span className="glyphicon glyphicon-lock form-control-feedback"></span>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-xs-12"> </div>
+                                        <div className="col-xs-12">
+                                            <button type="submit" name="sign_in" className="btn btn-success btn-block btn-flat">Sign In</button>
                                         </div>
                                     </div>
-                                    <div class="col--xs-4">
-                                        <a href="#" class="forgot_password"> Forgot password</a><br/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                    </div>
-                                    <div class="col-xs-12">
-                                        
-                                    </div>
-                                    <div class="col-xs-12">
-                                        <button type="submit" name="sign_in" class="btn btn-success btn-block btn-flat">Sign In</button>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>	
                         </div>
-                        <div id="forgot-form">
-                            <p class="forgot-box-msg">In case you forgot your password, don't worry. We'll help you to get your account access back. Just enter your email address, we'll send you an email with change password link.</p>
-                            <form action="#" method="post">
-                                <div class="form-group has-feedback">
-                                    <input type="email" class="form-control" name="forgot_email" placeholder="Email" required />
-                                    <i class="fa fa-envelope form-control-feedback"></i>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <a href="#" class="back_to_login">Back To Login</a>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button type="submit" class="btn btn-success btn-block btn-flat" name="sign_in" value="forgot">Submit</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>	
                     </div>
                 </div>
-            </div>
+            }
         </>
     );
 }

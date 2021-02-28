@@ -163,14 +163,14 @@ h6,
 }
 /* General Links */
 a {
-  color: #3c8dbc;
+  color: #ffffff;
 }
 a:hover,
 a:active,
 a:focus {
   outline: none;
   text-decoration: none;
-  color: #72afd2;
+  color: #cee7f5;
 }
 /* Page Header */
 .page-header {
@@ -258,7 +258,7 @@ a:focus {
   font-family: fontAwesome;
 }
 .main-header .sidebar-toggle:before {
-  content: "\f0c9";
+  /*content: "\f0c9";*/
 }
 .main-header .sidebar-toggle:hover {
   color: #fff;
@@ -462,7 +462,7 @@ a:focus {
 }
 .sidebar {
   padding-bottom: 10px;
-  height: 100%;
+  height: 114%;
   overflow: hidden;
 overflow-y: auto;
 }
@@ -4985,4 +4985,14 @@ table.text-center th {
 .pagination>.active>span:hover {
     background-color: #3e1054 !important;
     border-color: #3e1155 !important;
+}
+.user_name {
+  color: white;
+}
+.logo {
+  background: white;
+}
+.navbar {
+  /* background-color: #166fc0; */
+  background: linear-gradient(to right, #166fc0 0%, #3e1054 100%);
 }

@@ -1,67 +1,40 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {NavLink } from 'react-router-dom';
 import '../../assets/css/bootstrap.min.css';
 import '../../assets/css/style.css';
+import '../../assets/css/skin-purple.css';
+import '../../assets/css/skin-blue.css';
+import '../../assets/css/skin-green.css';
 import '../../assets/iCheck/square/green.css';
-
+import icon from '../../assets/img/admin.png';
+import bg from '../../assets/img/bg.jpg';
+import { localStorageData } from "./Protected";
 
 const Navigation = () => {
+    const localData = useContext(localStorageData);
 
     return (    
         <>
             <div>
-                <aside class="main-sidebar">
-                    <section class="sidebar bg-img" style="#">
+                <aside className="main-sidebar">
+                    <section className="sidebar bg-img" style={{backgroundImage: `url(${bg})`}}>
 
-                        <div class="user-panel">
-                            <div class="pull-left image">
-                                <img src="#" class="img-circle" alt="User Image" />
+                        <div className="user-panel">
+                            <div className="pull-left image">
+                                <img src={icon} className="img-circle" alt="logged in user icon" />
                             </div>
-                            <div class="pull-left info">
-                                <p class="user_name">Shubham</p>
-                                <NavLink className="#" exact to="/"><i class="fa fa-circle text-success"></i> Online</NavLink>
+                            <div className="pull-left info">
+                                <p className="user_name">{localData.name}</p>
+                                <NavLink className="nav-link" exact to="/"><i className="fa fa-circle text-success"></i> Online </NavLink>
                             </div>
                         </div>
 
-                        <ul class="sidebar-menu">
-                            
-                            <li class="">
-                                <NavLink className="" exact to="/"><i class="fa fa-dashboard"></i> <span> Dashboard</span></NavLink>
+                        <ul className="sidebar-menu">
+                            <li className="">
+                                <NavLink className="nav-link" exact to="/dashboard"><i className="fa fa-home"></i> Dashboard </NavLink>
                             </li>
-
-                            <li class="">
-                                <NavLink className="" exact to="/"><i class="fa fa-dashboard"></i> <span> Dashboard</span></NavLink>
-                            </li>
-
-                            <li class="">
-                                <NavLink className="" exact to="/"><i class="fa fa-dashboard"></i> <span> Dashboard</span></NavLink>
-                            </li>
-
-                            <li class="">
-                                <NavLink className="" exact to="/"><i class="fa fa-users"></i> <span> Admin List</span></NavLink>
-                            </li>
-
-                            <li class="">
-                                <NavLink className="" exact to="/"><i class="fa fa-users"></i> <span> Add RSO</span></NavLink>
-                            </li>
-                            
-                            <li class="">
-                                <NavLink className="" exact to="/"><i class="fa fa-ticket"></i> <span> RSO Ticket</span></NavLink>
-                            </li>
-
-                            <li class="">
-                                <NavLink className="" exact to="/"><i class="fa fa-users"></i> <span> Add ASM</span></NavLink>
-                            </li>
-
-                            <li class="treeview">
-                                <NavLink className=""><i class="fa fa-file"></i><span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i></span>RSO Reports
-                            </NavLink>
-                            <ul class="treeview-menu" style="display: none;">
-                                <li class="">
-                                    <NavLink className="" exact to="/"><i class="fa fa-home" aria-hidden="true"></i> <span> Store Order Report</span></NavLink>
-                                </li>
-                            </ul>
+                            <li className="">
+                                <NavLink className="nav-link" exact to="/rso"><i className="fa fa-users"></i> Add RSO </NavLink>
                             </li>
                             
                         </ul>
