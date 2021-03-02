@@ -1,29 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import {NavLink, Redirect } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import * as ReactBootstrap from 'react-bootstrap';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Rso = () => {
 
     document.title = 'RSO List';
-    const { register, handleSubmit } = useForm();
-
-    const onSubmit = async (data) => {
-        
-    };
 
     let localData = localStorage.getItem('is_login');
     localData = JSON.parse(localData);
 
     const[totalData , setTotalData] = useState([]);
     const[loading, setLoading] = useState(false);
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
-    const logoutData = async () => {
-        let items = { "username": localData.username, "token": localData.token };
+    const handleChangeStart = date => {
+        setStartDate(date);
+    }
+
+    const handleChangeEnd = date => {
+        setEndDate(date);
+    }
+
+    const rsoData = async (data) => {
+        let items = { "username": localData.username, "token": localData.token,
+        "start_date": '', "end_date": '' };
         const formData = JSON.stringify(items);
-        let result = await fetch("http://localhost/omron_app_api/api/retailer_list", {
+        let result = await fetch("http://localhost/omron_app_api/api/rso_list", {
             method: "POST",
             body: formData
         });
@@ -33,6 +40,30 @@ const Rso = () => {
             setLoading(true);
         }
     }
+
+    function date_conversion(get_date) {
+        var d = new Date(get_date);
+        var dt = ('0' + d.getDate()).slice(-2);
+        var y = d.getFullYear();
+        var m = ('0' + (d.getMonth()+1)).slice(-2);
+        return y+'-'+m+'-'+dt;
+      }
+
+    const onSubmit = async (event) => {
+        event.preventDefault();
+        let items = { "username": localData.username, "token": localData.token,
+                    "start_date": date_conversion(startDate), "end_date": date_conversion(endDate) };
+        const formData = JSON.stringify(items);
+        let result = await fetch("http://localhost/omron_app_api/api/rso_list", {
+            method: "POST",
+            body: formData
+        });
+        result = await result.json();
+        if(result.status === "2") {
+            setTotalData(result.data);
+            setLoading(true);
+        }
+    };
 
     const columns = [
         { dataField: 'username', text: 'Username' },
@@ -48,7 +79,7 @@ const Rso = () => {
     ];
 
     useEffect(() => {
-        logoutData();
+        rsoData();
     }, []);
 
     return (
@@ -66,18 +97,18 @@ const Rso = () => {
                             <div className="box">
                                 <div className="box-body">
                             
-                                    <form action="/" method="post" onSubmit={handleSubmit(onSubmit)}>
+                                    <form action="/" method="post" onSubmit={onSubmit}>
                                         <div className="col-md-3">
                                             <label>Start Date</label>
                                             <div className="input-group date">
-                                                <input type="text" name="start" readOnly className="form-control" ref={register()} />
+                                                <DatePicker selected={startDate} name="start_date" className="form-control datepicker-bg" dateFormat="yyyy-MM-dd" onChange={handleChangeStart} />
                                                 <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
                                         <div className="col-md-3">
                                             <label>End Date</label>
                                             <div className="input-group date">
-                                                <input type="text" name="end" readOnly className="form-control" ref={register()} />
+                                                <DatePicker selected={endDate} name="end_date" className="form-control datepicker-bg" dateFormat="yyyy-MM-dd" onChange={handleChangeEnd} />
                                                 <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
                                             </div>
                                         </div>

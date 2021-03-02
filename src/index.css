@@ -132,3 +132,7 @@ button > a {
 .hyperlink-color:hover {
   color: #9b0055;
 }
+.datepicker-bg {
+    width: 250px !important;
+    background: #95929226 !important;
+}
