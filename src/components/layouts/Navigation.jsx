@@ -12,6 +12,8 @@ import { localStorageData } from "./Protected";
 
 const Navigation = () => {
     const localData = useContext(localStorageData);
+    let urlElements = window.location.href.split('/');
+    let activeURL = urlElements[3];
 
     return (    
         <>
@@ -31,10 +33,13 @@ const Navigation = () => {
 
                         <ul className="sidebar-menu">
                             <li className="">
-                                <NavLink className="nav-link" exact to="/dashboard"><i className="fa fa-home"></i> Dashboard </NavLink>
+                                <NavLink className="nav-link"  activeClassName={(activeURL === 'dashboard') ? 'active' : '' } exact to="/dashboard"><i className="fa fa-home"></i> Dashboard </NavLink>
                             </li>
                             <li className="">
-                                <NavLink className="nav-link" exact to="/rso"><i className="fa fa-users"></i> Add RSO </NavLink>
+                                <NavLink className="nav-link"  activeClassName={(activeURL === 'rso') ? 'active' : '' } exact to="/rso"><i className="fa fa-users"></i> Add RSO </NavLink>
+                            </li>
+                            <li className="">
+                                <NavLink className="nav-link"  activeClassName={(activeURL === 'ticket') ? 'active' : '' } exact to="/ticket"><i className="fa fa-ticket"></i> RSO Ticket </NavLink>
                             </li>
                             
                         </ul>

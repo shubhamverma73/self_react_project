@@ -1,22 +1,25 @@
+//https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=Basic%20Table&selectedStory=Customized%20id%20and%20class%20table&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Factions%2Factions-panel
 import React, { useState, useEffect } from 'react';
-import {NavLink, Redirect } from 'react-router-dom';
+import {NavLink, Redirect, Link } from 'react-router-dom';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import * as ReactBootstrap from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Switch from "react-switch";
 
 const Rso = () => {
-
     document.title = 'RSO List';
 
     let localData = localStorage.getItem('is_login');
     localData = JSON.parse(localData);
 
-    const[totalData , setTotalData] = useState([]);
+    const[totalData, setTotalData] = useState([]);
     const[loading, setLoading] = useState(false);
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const[startDate, setStartDate] = useState(new Date());
+    const[endDate, setEndDate] = useState(new Date());
+    const[searchArray, setsearchArray] = useState([]);
+    const[checked, setChecked] = useState(true);
 
     const handleChangeStart = date => {
         setStartDate(date);
@@ -25,6 +28,10 @@ const Rso = () => {
     const handleChangeEnd = date => {
         setEndDate(date);
     }
+    
+    const handleChangeSwitch = nextChecked => {
+        setChecked(nextChecked);
+    };
 
     const rsoData = async (data) => {
         let items = { "username": localData.username, "token": localData.token,
@@ -37,6 +44,7 @@ const Rso = () => {
         result = await result.json();
         if(result.status === "2") {
             setTotalData(result.data);
+            setsearchArray(result.data);
             setLoading(true);
         }
     }
@@ -61,26 +69,86 @@ const Rso = () => {
         result = await result.json();
         if(result.status === "2") {
             setTotalData(result.data);
+            setsearchArray(result.data);
             setLoading(true);
         }
     };
 
+    // ================================ Table Property =========================================    
+    const showStatus = (cell, row, rowIndex, formatExtraData) => {
+        if(row.status) {
+            return (
+                <>
+                    {
+                        (row.status) === 'Approved' ?
+                        <div className="activeCircle"></div>
+                        :
+                        <div className="inactiveCircle"></div>
+                    }
+                </>
+            )
+        }
+    }
+    const formatButton = (cell, row, rowIndex, formatExtraData) => {
+        if(row.id) {
+            return (
+                <>
+                    <div>
+                        <Link className="btn btn-sm btn-success" to={`/rso/edit/${row.id}`}>Edit</Link>
+                    </div>
+                </>
+            )
+        }
+    }
+    const formatSwitch = (cell, row, rowIndex, formatExtraData) => {
+        
+        if(row.email) {
+            return (
+                <>
+                    <div>
+                        {
+                            (row.status === 'Approved') ?
+                            <Switch height={20} width={40} id={row.email} onChange={handleChangeSwitch} checked={true} className="react-switch" />
+                            :
+                            <Switch height={20} width={40} id={row.email} onChange={handleChangeSwitch} checked={false} className="react-switch" />
+                        }
+                    </div>
+                </>
+            )
+        }
+    }
+    // ================================ Table Property =========================================
     const columns = [
-        { dataField: 'username', text: 'Username' },
-        { dataField: 'name', text: 'Name' },
-        { dataField: 'role', text: 'Role' },
-        { dataField: 'email', text: 'Email' },
-        { dataField: 'zone', text: 'Zone' },
-        { dataField: 'address', text: 'Addess' },
-        { dataField: 'city', text: 'City' },
-        { dataField: 'state', text: 'State' },
-        { dataField: 'mobile', text: 'Mobile' },
-        { dataField: 'status', text: 'Status' }
-    ];
+        { dataField: 'username', text: 'Username', sort: true,
+        classes: (cell, row, rowIndex, colIndex) => {
+            if (rowIndex % 2 === 0) return 'row-even'; return 'row-odd';
+        }
+        },
+        { dataField: 'name', text: 'Name', sort: true },
+        { dataField: 'role', text: 'Role', sort: true },
+        { dataField: 'email', text: 'Email', sort: true },
+        { dataField: 'zone', text: 'Zone', sort: true },
+        { dataField: 'city', text: 'City', sort: true },
+        { dataField: 'state', text: 'State', sort: true },
+        { dataField: 'mobile', text: 'Mobile', sort: true },
+        { dataField: 'status', text: 'Status', sort: true, formatter: showStatus },
+        { dataField: 'ids', text: 'Change Status', formatter: formatSwitch },
+        { dataField: 'id', text: 'Action', formatter: formatButton }
+    ]
 
     useEffect(() => {
         rsoData();
     }, []);
+
+    const onChangeHandler = (event) => {
+        let newArray = searchArray.filter((d) => 
+        {
+            //console.log(d);
+            var searchValue = d.email.toLowerCase() || d.username || d.mobile;
+            return searchValue.indexOf(event.target.value) !== -1;
+        });
+        setTotalData(newArray);
+    };
 
     return (
         <>
@@ -96,20 +164,18 @@ const Rso = () => {
                         <section className="content">
                             <div className="box">
                                 <div className="box-body">
-                            
+                                {/* <Switch height={20} width={40} onChange={handleChangeSwitch} checked={checked} className="react-switch" /> */}
                                     <form action="/" method="post" onSubmit={onSubmit}>
                                         <div className="col-md-3">
                                             <label>Start Date</label>
                                             <div className="input-group date">
-                                                <DatePicker selected={startDate} name="start_date" className="form-control datepicker-bg" dateFormat="yyyy-MM-dd" onChange={handleChangeStart} />
-                                                <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
+                                                <DatePicker selected={startDate} name="start_date" className="form-control datepicker-bg" dateFormat="yyyy-MM-dd" onChange={handleChangeStart.bind(this)} />
                                             </div>
                                         </div>
                                         <div className="col-md-3">
                                             <label>End Date</label>
                                             <div className="input-group date">
                                                 <DatePicker selected={endDate} name="end_date" className="form-control datepicker-bg" dateFormat="yyyy-MM-dd" onChange={handleChangeEnd} />
-                                                <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
                                         <div className="col-md-2" style={{marginTop: "24px"}}>
@@ -117,17 +183,31 @@ const Rso = () => {
                                         </div>                                        
                                     </form>
                                     <NavLink className="pull-right btn btn-success" style={{marginTop:"20px"}} exact to="/download-rso"><i className="fa fa-download"></i> Download </NavLink>
-                                    <br/><br/><br/><br/>
+                                    <br/><br/><br/>
+
+                                    <div className="input-group pull-right">
+                                        <div className="form-outline">
+                                            <input type="search" className="form-control" name="search" id="search" placeholder="Search" onChange={onChangeHandler} />
+                                        </div>
+                                    </div>
+                                    <br/><br/>
 
                                     <div className="col-xs-12 table-responsive">
 
-                                    {loading ? (
+                                    {loading ? (                                        
                                         <BootstrapTable
                                             keyField="username"
+                                            key="id"
                                             data={ totalData }
                                             columns={ columns }
                                             pagination={ paginationFactory() }
-                                        />
+                                            hover
+                                            striped
+                                            condensed
+                                            noDataIndication="Table is Empty"
+                                            headerWrapperClasses="foo"
+                                        >
+                                        </BootstrapTable>
                                     ) : <ReactBootstrap.Spinner animation="border" />
                                     }
                                         

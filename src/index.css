@@ -136,3 +136,36 @@ button > a {
     width: 250px !important;
     background: #95929226 !important;
 }
+.row-even {
+  border: 1px solid #ddd;
+  background-color: #81c784;
+}
+.row-odd {
+  border: 1px solid #ddd;
+  background-color: #c8e6c9;
+}
+.activeCircle {
+  background: rgb(21, 141, 51);
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  margin-left: 30px;
+  
+}
+.inactiveCircle {
+  background: rgb(185, 26, 14);
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  margin-left: 30px;
+}
+.graph-div {
+	margin: auto !important;
+	border: 3px solid rgb(236, 236, 236);
+	padding: 10px !important;
+}
+.active {
+  color: #ffffff;
+  background: linear-gradient(to right, #166fc0 0%, #3e1054 100%);
+  border-left-color: #3f1054;
+}

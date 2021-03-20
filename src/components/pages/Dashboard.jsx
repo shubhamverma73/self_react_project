@@ -1,9 +1,13 @@
 import React, { useState, useEffect }  from 'react';
 import {Redirect} from 'react-router-dom';
+import { Bar, Pie } from 'react-chartjs-2'
 
 const Dashboard = () => {
 
     document.title = 'Dashboard';
+
+    const [percentage, setpercentage] = useState(1);
+    const [rawData, setData] = useState([]);
 
     let localData = localStorage.getItem('is_login');
     localData = JSON.parse(localData);
@@ -26,6 +30,36 @@ const Dashboard = () => {
     useEffect(() => {
         logoutData();
     }, []);
+
+    useEffect(() => {
+        setpercentage(80);
+    
+        setData({
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 29, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.6)',
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(153, 102, 255, 0.6)',
+                'rgba(255, 159, 64, 0.6)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+          }]
+        })
+    
+    }, [setpercentage, setData]);
 
     return (
         <>
@@ -88,18 +122,13 @@ const Dashboard = () => {
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <div className="box-body">
+                                            <div className="box-body" style={{height:"100%"}}>
                                                 <div className="col-md-12">
                                                     <div id="bpm-inventory"></div>
-                                                    <p className="amount-val"><strong>K =</strong> Thoudands, <strong>M =</strong> Million, <strong>B =</strong> Billion</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="box-body">
-                                                <div className="col-md-12">
-                                                    <div id="nebu-inventory"></div>
-                                                    <p className="amount-val"><strong>K =</strong> Thoudands, <strong>M =</strong> Million, <strong>B =</strong> Billion</p>
+                                                    <div className="BarExample graph-div" style={{height:"40%", width:"80%"}}>
+                                                        <Bar data={rawData} />
+                                                        <Pie data={rawData} />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>					
