@@ -66,7 +66,7 @@ const EditTicket = () => {
             setmessageType('success');
             setMessage(result.message);
             setTimeout( () => {
-                history.push('/ticket');
+                history.push('/rso');
             }, 5000);
         } else {
             setshowMessage('');
@@ -139,7 +139,7 @@ const EditTicket = () => {
                                         </div>
                                         <div className="form-group col-sm-4">
                                             <label>Remarks <span className="red">*</span></label>
-                                            <input type="text" className="form-control" id="remarks" name="remarks" defaultValue={remarks} ref={register} />
+                                            <input type="text" className="form-control" id="remarks" name="remarks" value={remarks}  ref={register} />
                                         </div>
                                     </div>
                                     <br/>

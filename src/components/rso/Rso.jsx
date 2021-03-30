@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Switch from "react-switch";
 import { CSVLink } from "react-csv";
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
 const Rso = () => {
     document.title = 'RSO List';
@@ -19,8 +20,8 @@ const Rso = () => {
     const[loading, setLoading] = useState(false);
     const[startDate, setStartDate] = useState(new Date());
     const[endDate, setEndDate] = useState(new Date());
-    const[searchArray, setsearchArray] = useState([]);
     const[checked, setChecked] = useState(true);
+    const { SearchBar } = Search;
 
     const handleChangeStart = date => {
         setStartDate(date);
@@ -46,7 +47,6 @@ const Rso = () => {
         result = await result.json();
         if(result.status === "2") {
             setTotalData(result.data);
-            setsearchArray(result.data);
             setLoading(true);
         }
     }
@@ -75,7 +75,6 @@ const Rso = () => {
         result = await result.json();
         if(result.status === "2") {
             setTotalData(result.data);
-            setsearchArray(result.data);
             setLoading(true);
         }
     };
@@ -149,18 +148,6 @@ const Rso = () => {
     }, []);
     // ================================ Table data load =========================================
 
-    // =================================== Filter ===================================
-    const onChangeHandler = (event) => {
-        let newArray = searchArray.filter((d) => 
-        {
-            //console.log(d);
-            var searchValue = d.email.toLowerCase() || d.username || d.mobile;
-            return searchValue.indexOf(event.target.value) !== -1;
-        });
-        setTotalData(newArray);
-    };
-    // =================================== Filter ===================================
-
     // =================================== CSV Data ===================================
     const csvResponse = async (data) => {
         let items = { "username": localData.username, "token": localData.token };
@@ -216,29 +203,39 @@ const Rso = () => {
                                     <CSVLink className="pull-right btn btn-success" style={{marginTop:"20px"}} data={csvData} filename={"RSO Download.csv"}><i className="fa fa-download"></i> Download</CSVLink>
                                     <br/><br/><br/>
 
-                                    <div className="input-group pull-right">
-                                        <div className="form-outline">
-                                            <input type="search" className="form-control" name="search" id="search" placeholder="Search" onChange={onChangeHandler} />
-                                        </div>
-                                    </div>
-                                    <br/><br/>
-
                                     <div className="col-xs-12 table-responsive">
 
                                     {loading ? (                                        
-                                        <BootstrapTable
+                                        <ToolkitProvider
                                             keyField="username"
                                             key="id"
                                             data={ totalData }
                                             columns={ columns }
-                                            pagination={ paginationFactory() }
-                                            hover
-                                            striped
-                                            condensed
-                                            noDataIndication="Table is Empty"
-                                            headerWrapperClasses="foo"
-                                        >
-                                        </BootstrapTable>
+                                            search
+                                            >
+                                            {
+                                                props => (
+                                                <div>
+                                                    <SearchBar { ...props.searchProps }
+                                                    className="input-group"
+                                                    style={ { color: 'black' } }
+                                                    delay={ 1000 }
+                                                    placeholder="Search"
+                                                    />
+                                                    <hr />
+                                                    <BootstrapTable
+                                                    { ...props.baseProps }
+                                                    pagination={ paginationFactory() }
+                                                    hover
+                                                    striped
+                                                    condensed
+                                                    noDataIndication="Table is Empty"
+                                                    headerWrapperClasses="foo"
+                                                    />
+                                                </div>
+                                                )
+                                            }
+                                            </ToolkitProvider>
                                     ) : <ReactBootstrap.Spinner animation="border" />
                                     }
                                         

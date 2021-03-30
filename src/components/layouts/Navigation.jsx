@@ -41,6 +41,9 @@ const Navigation = () => {
                             <li className="">
                                 <NavLink className="nav-link"  activeClassName={(activeURL === 'ticket') ? 'active' : '' } exact to="/ticket"><i className="fa fa-ticket"></i> RSO Ticket </NavLink>
                             </li>
+                            <li className="">
+                                <NavLink className="nav-link"  activeClassName={(activeURL === 'stores') ? 'active' : '' } exact to="/stores"><i className="fas fa-store"></i> Stores </NavLink>
+                            </li>
                             
                         </ul>
                     </section>

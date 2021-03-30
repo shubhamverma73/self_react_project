@@ -8,6 +8,8 @@ import EditRso from './components/rso/EditRso';
 import AddRso from './components/rso/AddRso';
 import Ticket from './components/ticket/Ticket';
 import EditTicket from './components/ticket/EditTicket';
+import Stores from './components/stores/Stores';
+import EditStore from './components/stores/EditStore';
 import Logout from './components/user/Logout';
 // import NotFound from './components/pages/NotFound';
 
@@ -26,6 +28,8 @@ function App() {
                   <Protected exact path="/add-rso" component={AddRso} />
                   <Protected exact path="/ticket" component={Ticket} />
                   <Protected exact path="/ticket/edit/:id" component={EditTicket} />
+                  <Protected exact path="/stores" component={Stores} />
+                  <Protected exact path="/store/edit/:id" component={EditStore} />
                 </Switch>
               </div>
             </Router> 

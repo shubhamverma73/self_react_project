@@ -179,3 +179,8 @@ button > a {
   background-color: rgb(214, 154, 42) !important;
   border: 1px solid rgb(214, 154, 42) !important;
 }
+/* =============================== Search bar class right pull ========================= */
+.search-label {
+  float: right!important;
+}
+/* =============================== Search bar class right pull ========================= */
