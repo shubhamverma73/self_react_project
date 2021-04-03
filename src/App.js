@@ -10,6 +10,9 @@ import Ticket from './components/ticket/Ticket';
 import EditTicket from './components/ticket/EditTicket';
 import Stores from './components/stores/Stores';
 import EditStore from './components/stores/EditStore';
+import Targets from './components/targets/Targets';
+import EditTarget from './components/targets/EditTarget';
+import UploadTargets from './components/targets/UploadTargets';
 import Logout from './components/user/Logout';
 // import NotFound from './components/pages/NotFound';
 
@@ -30,6 +33,9 @@ function App() {
                   <Protected exact path="/ticket/edit/:id" component={EditTicket} />
                   <Protected exact path="/stores" component={Stores} />
                   <Protected exact path="/store/edit/:id" component={EditStore} />
+                  <Protected exact path="/targets" component={Targets} />
+                  <Protected exact path="/target/edit/:id" component={EditTarget} />
+                  <Protected exact path="/upload-targets" component={UploadTargets} />
                 </Switch>
               </div>
             </Router> 

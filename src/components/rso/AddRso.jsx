@@ -4,7 +4,7 @@ import {NavLink, Redirect, useHistory } from 'react-router-dom';
 
 const AddUser = () => {
 
-    document.title = 'Ass RSO';
+    document.title = 'Add RSO';
     let localData = localStorage.getItem('is_login');
     localData = JSON.parse(localData);
 

@@ -18,7 +18,6 @@ const Stores = () => {
     const[loading, setLoading] = useState(false);
     const[startDate, setStartDate] = useState(new Date());
     const[endDate, setEndDate] = useState(new Date());
-    const[searchArray, setsearchArray] = useState([]);
     const { SearchBar } = Search;
 
     const handleChangeStart = date => {
@@ -41,7 +40,6 @@ const Stores = () => {
         result = await result.json();
         if(result.status === "2") {
             setTotalData(result.data);
-            setsearchArray(result.data);
             setLoading(true);
         }
     }
@@ -70,7 +68,6 @@ const Stores = () => {
         result = await result.json();
         if(result.status === "2") {
             setTotalData(result.data);
-            setsearchArray(result.data);
             setLoading(true);
         }
     };
@@ -168,7 +165,7 @@ const Stores = () => {
                 <div>
                     <div className="content-wrapper"  style={{paddingTop: "10px"}}>        
                         <section className="content-header">
-                            <h1>Storess</h1>
+                            <h1>Stores</h1>
                         </section>
                         <section className="content">
                             <div className="box">
