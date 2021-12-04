@@ -7,18 +7,22 @@ const Logout = () => {
     let history = useHistory();
 
     const logoutData = async () => {
-        let items = { "username": localData.username, "token": localData.token };
-        const formData = JSON.stringify(items);
-        let result = await fetch("http://localhost/omron_app_api/api/logout", {
-            method: "POST",
-            body: formData
-        });
-        result = await result.json();
-        if(result.status === "2") {
-            localStorage.clear(); 
-            history.push('/');
-        } else {
-            alert('Not able to logout, try again');
+        try {
+            let items = { "username": localData.username, "token": localData.token };
+            const formData = JSON.stringify(items);
+            let result = await fetch("http://localhost/omron_app_api/api/logout", {
+                method: "POST",
+                body: formData
+            });
+            result = await result.json();
+            if(result.status === "2") {
+                localStorage.clear(); 
+                history.push('/');
+            } else {
+                alert('Not able to logout, try again');
+            }
+        } catch {
+            history.push('./');
         }
     }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect }  from 'react';
-import {Redirect} from 'react-router-dom';
+import {useHistory, Redirect} from 'react-router-dom';
 import { Bar, Pie } from 'react-chartjs-2'
 
 const Dashboard = () => {
@@ -8,6 +8,7 @@ const Dashboard = () => {
 
     const [percentage, setpercentage] = useState(1);
     const [rawData, setData] = useState([]);
+    let history = useHistory();
 
     let localData = localStorage.getItem('is_login');
     localData = JSON.parse(localData);
@@ -15,15 +16,19 @@ const Dashboard = () => {
     const[totalData , setTotalData] = useState([]);
 
     const logoutData = async () => {
-        let items = { "username": localData.username, "token": localData.token };
-        const formData = JSON.stringify(items);
-        let result = await fetch("http://localhost/omron_app_api/api/dashboard", {
-            method: "POST",
-            body: formData
-        });
-        result = await result.json();
-        if(result.status === "2") {
-            setTotalData(result.data);
+        try {
+            let items = { "username": localData.username, "token": localData.token };
+            const formData = JSON.stringify(items);
+            let result = await fetch("http://localhost/omron_app_api/api/dashboard", {
+                method: "POST",
+                body: formData
+            });
+            result = await result.json();
+            if(result.status === "2") {
+                setTotalData(result.data);
+            }
+        } catch {
+            history.push('./');
         }
     }
 
@@ -64,7 +69,7 @@ const Dashboard = () => {
     return (
         <>
             {
-                !localStorage.getItem('is_login') ? <Redirect to='/' /> :
+                //!localStorage.getItem('is_login') ? <Redirect to='/' /> :
                 <div>
                     <div className="content-wrapper"  style={{paddingTop: "80px"}}>        
                         <section className="content">	 

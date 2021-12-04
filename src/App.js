@@ -14,7 +14,7 @@ import Targets from './components/targets/Targets';
 import EditTarget from './components/targets/EditTarget';
 import UploadTargets from './components/targets/UploadTargets';
 import Logout from './components/user/Logout';
-// import NotFound from './components/pages/NotFound';
+import NotFound from './components/pages/NotFound';
 
 function App() {
 
@@ -36,6 +36,7 @@ function App() {
                   <Protected exact path="/targets" component={Targets} />
                   <Protected exact path="/target/edit/:id" component={EditTarget} />
                   <Protected exact path="/upload-targets" component={UploadTargets} />
+                  <Route component={NotFound} />
                 </Switch>
               </div>
             </Router> 

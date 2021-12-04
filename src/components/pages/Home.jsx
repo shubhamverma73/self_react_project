@@ -1,4 +1,4 @@
-import React, {useState}  from 'react';
+import React, {useEffect, useState}  from 'react';
 import {useHistory, Redirect} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import logo from '../../assets/img/logo.png';
@@ -14,6 +14,13 @@ const Home = () => {
     const[showMessage, setshowMessage] = useState('hide');
     const[messageType, setmessageType] = useState('success');
     const[message, setMessage] = useState();
+
+    const isLogin = localStorage.getItem('is_login');
+    useEffect(() => {
+        if(isLogin) {
+            history.push('./dashboard');
+        }
+    }, []);
 
     const onSubmit = async (data) => {
         let items = data;
@@ -40,7 +47,7 @@ const Home = () => {
     return (
         <>
             {
-                localStorage.getItem('is_login') ? <Redirect to='/dashboard' /> :
+                //localStorage.getItem('is_login') ? <Redirect to='/dashboard' /> :
                 <div>
                     <div className="login-box">
                     {
